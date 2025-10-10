@@ -33,8 +33,9 @@ Makefile
 *.vcxproj
 *.vcxproj.filters
 
-# Schedule data files (keep as examples)
+# Schedule data files
 *.dat
+!*.dat.example
 
 # Temporary files
 *.tmp

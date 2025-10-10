@@ -54,22 +54,34 @@ void TimeChecker::CheckCurrentTime() {
         }
         InitiateShutdown();
     } else {
-        warningShown = false;
         // Check if we're approaching the end of allowed time
         DaySchedule schedule = scheduleManager->GetDaySchedule(dayOfWeek);
         if (schedule.enabled) {
             int currentMinutes = hour * 60 + minute;
             
             for (const auto& slot : schedule.timeSlots) {
+                int startMinutes = slot.startHour * 60 + slot.startMinute;
                 int endMinutes = slot.endHour * 60 + slot.endMinute;
-                int timeUntilEnd = endMinutes - currentMinutes;
                 
-                // Show warning if within warning time
-                if (timeUntilEnd > 0 && timeUntilEnd <= warningTimeMinutes && !warningShown) {
-                    char message[256];
-                    sprintf(message, "Warning: Computer access will end in %d minutes.", timeUntilEnd);
-                    systemController->ShowWarning(message, "Access Time Warning");
-                    warningShown = true;
+                // Check if we're currently in this time slot
+                if (currentMinutes >= startMinutes && currentMinutes < endMinutes) {
+                    int timeUntilEnd = endMinutes - currentMinutes;
+                    
+                    // Show warning if within warning time
+                    if (timeUntilEnd > 0 && timeUntilEnd <= warningTimeMinutes && !warningShown) {
+                        char message[256];
+#ifdef _WIN32
+                        sprintf_s(message, sizeof(message), "Warning: Computer access will end in %d minutes.", timeUntilEnd);
+#else
+                        snprintf(message, sizeof(message), "Warning: Computer access will end in %d minutes.", timeUntilEnd);
+#endif
+                        systemController->ShowWarning(message, "Access Time Warning");
+                        warningShown = true;
+                    } else if (timeUntilEnd > warningTimeMinutes) {
+                        // Reset warning flag if we're not in warning period yet
+                        warningShown = false;
+                    }
+                    break;
                 }
             }
         }
