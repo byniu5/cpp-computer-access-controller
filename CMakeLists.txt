@@ -3,7 +3,44 @@ project(cpp_parental_controller)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(cpp_parental_controller main.cpp
+set(SOURCES
+        main.cpp
         src/scripts/ShutdownScript.cpp
-        src/timer/timer.cpp
-        src/timer/timer.h)
+        src/timer/Timer.cpp
+        src/data/Data.cpp
+        src/data/Data.h
+)
+set(HEADERS
+        src/timer/Timer.h
+        src/scripts/ShutdownScript.h
+)
+
+add_executable(${PROJECT_NAME}
+                ${SOURCES}
+)
+
+##################### TESTS ######################
+
+enable_testing()
+
+# Fetch Google Test.
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.14.0
+)
+# Actually downloads and builds GTest.
+FetchContent_MakeAvailable(googletest)
+# Prevent CLion from auto-discovering individual tests.
+set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
+
+add_executable(tests
+        lib/tests/TimerTest.cpp
+        src/timer/Timer.cpp
+)
+
+# Links GTest to test executable.
+target_link_libraries(tests
+        GTest::gtest_main
+)
