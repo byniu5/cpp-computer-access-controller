@@ -1,5 +1,5 @@
 #include <iostream>
-#include <windows.h>
+#include <Windows.h>
 
 void script_handler() {
 
@@ -30,5 +30,34 @@ void script_handler() {
     } else {
         std::wcerr << L"Failed to start PowerShell. Error: " << GetLastError() << std::endl;
     }
+}
 
+bool addToStartup(const std::wstring& appName, const std::wstring& appPath) {
+    HKEY hKey;
+    // The path to the standard location of the user startup programs.
+    const wchar_t* regPath = L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+    
+    // Open the registry key
+    LONG result = RegOpenKeyExW(HKEY_CURRENT_USER, regPath, 0, KEY_SET_VALUE, &hKey);
+
+    // Check if the key was opened successfully.
+    if (result != ERROR_SUCCESS) {
+        std::wcerr << L"Failed to open registry key. Error: " << result << std::endl;
+        return false;
+    }
+
+    // Creates/updates a registry value with the application name as the key.
+    result = RegSetValueExW(hKey, appName.c_str(), 0, REG_SZ,
+                           (BYTE*)appPath.c_str(),
+                           (appPath.length() + 1) * sizeof(wchar_t));
+
+    RegCloseKey(hKey);
+
+    if (result != ERROR_SUCCESS) {
+        std::wcerr << L"Failed to set registry value. Error: " << result << std::endl;
+        return false;
+    }
+
+    std::wcout << L"Successfully added to startup: " << std::endl;
+    return true;
 }

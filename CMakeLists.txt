@@ -5,14 +5,16 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(SOURCES
         main.cpp
-        src/scripts/ShutdownScript.cpp
+        src/scripts/Scripts.cpp
         src/timer/Timer.cpp
         src/data/Data.cpp
         src/data/Data.h
+        src/scripts/notifications.cpp
+        src/scripts/Notifications.h
 )
 set(HEADERS
         src/timer/Timer.h
-        src/scripts/ShutdownScript.h
+        src/scripts/Scripts.h
 )
 
 add_executable(${PROJECT_NAME}
