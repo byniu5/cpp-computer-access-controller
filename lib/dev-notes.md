@@ -22,7 +22,7 @@ I would use the second approach, it will be slower but I would have a little fun
 
 4. [x] Make the structure of the program.
 
-5. [ ] Add the timer functionality.
+5. [x] Add the timer functionality.
 
 6. [ ] Add the entry in registry functionality.
 

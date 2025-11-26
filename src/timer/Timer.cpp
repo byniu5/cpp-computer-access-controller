@@ -5,6 +5,7 @@ Timer::Timer() = default;
 
 Timer::~Timer() = default;
 
+// Get actual time from the system.
 void Timer::getCurrentTime(int &hour, int &min) {
     // Returns the current calendar time as a time_t type.
     time_t now = time(nullptr);
@@ -15,12 +16,13 @@ void Timer::getCurrentTime(int &hour, int &min) {
     min = localTime->tm_min;
 }
 
+// Convert the obtained time into float values.
 float Timer::getCurrentTimeFloat() {
     int hour, min;
     getCurrentTime(hour, min);
     return hour * 100 + (min / 60.0f) * 100;
 }
-
+// Check if the actual time is between the set hours.
 bool Timer::isAllowedTime(float start, float end) {
     float currentTime = getCurrentTimeFloat();
     return (currentTime >= start) && (currentTime <= end);

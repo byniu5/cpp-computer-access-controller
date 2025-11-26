@@ -1,7 +1,9 @@
-#include <iostream>
 #include "src/scripts/ShutdownScript.h"
 #include "src/timer/Timer.h"
+#include "src/data/Data.h"
+
 #include <string>
+#include <iostream>
 
 int main() {
 
@@ -13,6 +15,12 @@ int main() {
         std::cout << Timer::isAllowedTime(1700, 2000);
         std::cin >> quit;
     }
+    struct Data::DataStruct dataStruct;
+
+    Data::setData(dataStruct);
+    Data::getData(dataStruct);
+
+    std::cout << "PASSWORD LEAK!!!:" << dataStruct.password;
 
 
 

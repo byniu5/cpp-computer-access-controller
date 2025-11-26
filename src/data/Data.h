@@ -9,14 +9,20 @@ public:
     Data();
     ~Data();
 
-    //TODO There will be logic
-    //  I need to learn communication with files, how
-    //  to retrieve data from file, how to same there it shouldn't be so complicated
-    //TODO Learn if there is way to encrypt somehow the data file, I won't give access
-    //  to change the values outside of program. Maybe I should think about different format
-    //  like .dat as I remember.
+    inline static std::string fileName = "C:\\Users\\czuba\\CLionProjects\\cpp-parental-controller\\src\\data\\data.dat";
+
+    struct DataStruct {
+        float start;
+        float end;
+        std::string password;
+    };
+
+    static void getData(DataStruct &dataStruct);
+    static void setData(DataStruct dataStruct);
 
 private:
+    static void saveData(DataStruct& dataStruct, const std::string& fileName);
+    static void loadData(DataStruct& dataStruct, const std::string& fileName);
 
 };
 
