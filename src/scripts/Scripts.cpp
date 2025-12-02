@@ -1,8 +1,9 @@
 #include <iostream>
 #include <Windows.h>
+#include <string>
+#include <vector>
 
-void script_handler() {
-
+void script_handler(const std::wstring &command) {
     // Windows structures that hold information.
     STARTUPINFO si;
     PROCESS_INFORMATION pi;         //  Structure that will receive info about the created process.
@@ -13,11 +14,12 @@ void script_handler() {
     ZeroMemory(&pi, sizeof(pi));
 
     // Create a PowerShell process
-    wchar_t cmd[] = L"powershell.exe -Command \"Write-Host 'Hello World'\"";
+    std::wstring powershellCmd = L"powershell.exe -Command \"" + command + L"\"";
+    std::vector<wchar_t> cmdBuffer(powershellCmd.begin(), powershellCmd.end());
+    cmdBuffer.push_back(0); // Null terminator
 
     // Parameters 1. application name 2. The command to execute 3. Process security attributes 4. Thread security attributes 5.  Don't inherit handles from parent
-    if (CreateProcessW(NULL, cmd, NULL, NULL, FALSE, 0, NULL, NULL, LPSTARTUPINFOW(&si), &pi)) {
-
+    if (CreateProcessW(NULL, cmdBuffer.data(), NULL, NULL, FALSE, 0, NULL, NULL, LPSTARTUPINFOW(&si), &pi)) {
         // Powershell pauses C++ program until its script completes.
         WaitForSingleObject(pi.hProcess, INFINITE);
 
@@ -32,8 +34,9 @@ void script_handler() {
     }
 }
 
-bool addToStartup(const std::wstring& appName, const std::wstring& appPath) {
+bool addToStartup(const std::wstring& appPath) {
     HKEY hKey;
+    const std::wstring appName = L"Access Controller";
     // The path to the standard location of the user startup programs.
     const wchar_t* regPath = L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
     

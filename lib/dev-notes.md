@@ -82,6 +82,7 @@ I would use the second approach, it will be slower but I would have a little fun
 - [ ] Understand the Registry handler
 - [ ] Understand the Notifications handler
 - [ ] Add proper Shutdown and log out functionality.
-- [ ] Connect it all to the main.cpp
+- [x] Connect it all to the main.cpp
 - [ ] Then try to make simple GUI.
 - [ ] Password encryption handler.
+- [ ] THERE IS EXACT PROBLEM EVERYTIME I RUN ANY PASSWORD WITH 5 signs.

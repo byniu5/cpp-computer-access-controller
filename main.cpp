@@ -8,24 +8,37 @@
 
 int main() {
 
-    std::string quit;
+    std::string password = "";
 
-    while (quit != "q") {
-    //system("powershell.exe -ExecutionPolicy Bypass -File script.ps1");
-        script_handler();
-        showToastNotificationViaPowerShell(
-        L"Parental Controller",
-        L"Time restriction active! You have 5 minutes to log out or enter password."
-        );
-        std::cout << Timer::isAllowedTime(1700, 2000);
-        std::cin >> quit;
-    }
     struct Data::DataStruct dataStruct;
-
-    Data::setData(dataStruct);
     Data::getData(dataStruct);
+    // If Windows 11/10
+    //addToStartup();
 
-    std::cout << "PASSWORD LEAK!!!:" << dataStruct.password;
+    if (Timer::isAllowedTime(dataStruct.start, dataStruct.end)) {
+        std::cout << "Access controller\nWrite password:" << std::endl;
+        std::cin >> password;
 
+        while (password != dataStruct.password) {
+            std::cout << "Wrong password" << std::endl;
+            std::cin >> password;
+        }
+        if (password == dataStruct.password) {
+            std::cout << "Welcome" << std::endl;
+            std::cout << "If you want change the settings click 's'\nIf you want to disable program click 'q'" << std::endl;
+            std::string value;
+            std::cin >> value;
+            if (value == "s") {
+                Data::setData(dataStruct);
+            } else if (value == "q") {}
+            return 0;
+        }
+    } else {
+        showToastNotificationViaPowerShell(
+        L"Log in outside of allowed hours",
+        L"Time restriction active! In 1 minute your computer will turn off."
+        );
+        //script_handler(L"shutdown /s /t 60");
+    }
     return 0;
 }

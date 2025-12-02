@@ -1,6 +1,7 @@
 #include "Data.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 Data::Data() = default;
 
@@ -8,9 +9,9 @@ Data::~Data() = default;
 
 void Data::getData(DataStruct &dataStruct) {
     loadData(dataStruct, fileName);
-    std::cout << dataStruct.start << std::endl;
-    std::cout << dataStruct.end << std::endl;
-    std::cout << dataStruct.password << std::endl;
+    // std::cout << dataStruct.start << std::endl;
+    // std::cout << dataStruct.end << std::endl;
+    // std::cout << dataStruct.password << std::endl;
 }
 
 void Data::setData(DataStruct dataStruct) {
@@ -27,6 +28,10 @@ void Data::setData(DataStruct dataStruct) {
     } catch (std::exception &e) {
         std::cerr << e.what() << '\n';
     }
+}
+
+std::string Data::getPassword(DataStruct &dataStruct) {
+    return dataStruct.password;
 }
 
 /* Open the stream and save data from the structure to the file,

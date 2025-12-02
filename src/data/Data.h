@@ -20,6 +20,8 @@ public:
     static void getData(DataStruct &dataStruct);
     static void setData(DataStruct dataStruct);
 
+    static std::string getPassword(DataStruct &dataStruct);
+
 private:
     static void saveData(DataStruct& dataStruct, const std::string& fileName);
     static void loadData(DataStruct& dataStruct, const std::string& fileName);
