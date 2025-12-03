@@ -11,7 +11,7 @@ void Timer::getCurrentTime(int &hour, int &min) {
     time_t now = time(nullptr);
     // Localtime converts time_t into a tm struct pointer with few addresses to a different component like hours, minutes, days.
     struct tm* localTime = localtime(&now);
-    // Extracts the components from tm struct
+    // Extracts the components from tm struct.
     hour = localTime->tm_hour;
     min = localTime->tm_min;
 }

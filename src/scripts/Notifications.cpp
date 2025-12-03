@@ -5,7 +5,7 @@
 #pragma comment(lib, "shell32.lib")
 
 void showToastNotificationViaPowerShell(const wchar_t* title, const wchar_t* message) {
-    std::wcout << L"\n=== Showing System Tray Notification ===" << std::endl;
+    std::wcout << L"\n=== Notification ===" << std::endl;
     
     // Get console window handle
     HWND hWnd = GetConsoleWindow();
@@ -37,7 +37,7 @@ void showToastNotificationViaPowerShell(const wchar_t* title, const wchar_t* mes
         return;
     }
     
-    std::wcout << L"SUCCESS: Notification displayed!" << std::endl;
+    std::wcout << L"Notification displayed!" << std::endl;
     
     // Keep notification visible for specified time
     Sleep(5000);

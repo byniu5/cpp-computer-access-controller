@@ -9,7 +9,7 @@ public:
     Data();
     ~Data();
 
-    inline static std::string fileName = "C:\\Users\\czuba\\CLionProjects\\cpp-parental-controller\\src\\data\\data.dat";
+    inline static std::string fileName = "data.dat";
 
     struct DataStruct {
         float start;
@@ -24,6 +24,8 @@ public:
     static void showData(DataStruct &dataStruct);
 
     static bool readTime(const std::string &prompt, float& timeValue);
+
+    static std::string getFileName();
 
 private:
     static void saveData(DataStruct& dataStruct, const std::string& fileName);

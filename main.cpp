@@ -5,17 +5,24 @@
 
 #include <string>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 int main() {
 
     std::string password = "";
+    std::wstring currentPath = getExecutablePath();
 
     struct Data::DataStruct dataStruct = {};
     Data::getData(dataStruct);
-    // If Windows 11/10
-    //addToStartup();
 
-    if (Timer::isAllowedTime(dataStruct.start, 2399)) {
+    // If the function from Scripts.cpp found the actual path of the .exe file, add this .exe to the registry as a
+    // startup application.
+    if (!currentPath.empty()) {
+        addToStartup(currentPath);
+    }
+
+    if (Timer::isAllowedTime(dataStruct.start, dataStruct.end)) {
         std::cout << "Access controller\nWrite password:" << std::endl;
         std::cin >> password;
 
@@ -38,11 +45,13 @@ int main() {
             return 0;
         }
     } else {
+        scriptHandler(L"shutdown /s /t 60");
+        std::this_thread::sleep_for(std::chrono::milliseconds(30000));
         showToastNotificationViaPowerShell(
         L"Shutdown warning",
-        L"Log in outside of allowed hours! In 1 minute your computer will shutdown."
+        L"Log in outside of allowed hours! In 30 seconds your computer will shutdown."
         );
-        //scriptHandler(L"shutdown /s /t 60");
     }
+    std::cin.get();
     return 0;
 }

@@ -1,18 +1,20 @@
 #include "Data.h"
 
 #include <algorithm>
+#include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <limits>
 #include <string>
+#include <windows.h>
 
 Data::Data() = default;
 
 Data::~Data() = default;
 
 void Data::getData(DataStruct &dataStruct) {
-    loadData(dataStruct, fileName);
+    loadData(dataStruct, getFileName());
 
 }
 
@@ -31,7 +33,7 @@ void Data::setData(DataStruct dataStruct) {
         std::cout << "Enter password: ";
         std::cin >> std::setw(sizeof(dataStruct.password)) >> dataStruct.password;
         // Save data to the file.
-        saveData(dataStruct, fileName);
+        saveData(dataStruct, getFileName());
 }
 
 std::string Data::getPassword(DataStruct &dataStruct) {
@@ -115,3 +117,28 @@ bool Data::readTime(const std::string &prompt, float& timeValue) {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 }
+
+// Find the data.dat file according to the path of the executable file.
+std::string Data::getFileName() {
+        // 1. Get the full path to the currently running executable
+        char buffer[MAX_PATH];
+        GetModuleFileNameA(NULL, buffer, MAX_PATH);
+        std::filesystem::path exePath(buffer);
+        std::filesystem::path exeDirectory = exePath.parent_path();
+
+        // 2. Define potential paths for data.dat
+        std::filesystem::path pathSameDir = exeDirectory / "data.dat";
+        std::filesystem::path pathParentDir = exeDirectory.parent_path() / "data.dat"; // ../data.dat (Project Root)
+
+        // 3. Check where the file actually exists
+        if (std::filesystem::exists(pathSameDir)) {
+            return pathSameDir.string();
+        }
+        if (std::filesystem::exists(pathParentDir)) {
+            return pathParentDir.string();
+        }
+
+        // 4. Fallback: If creating a NEW file, use the exe directory (keeps it self-contained)
+        // Or use pathParentDir.string() if you prefer it in the project root.
+        return pathParentDir.string();
+    }

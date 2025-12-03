@@ -16,15 +16,17 @@ I would use the second approach, it will be slower but I would have a little fun
 
 1. [x] Start from creating a simplest helloworld program. C++ code connected to powershell print(helloworld) script.
 
-2. [ ] Add this executable to registry and startup apps.
+2. [x] Add this executable to registry and startup apps.
  
-3. [ ] See if it works on the start of the computer.
+3. [x] See if it works on the start of the computer.
 
 4. [x] Make the structure of the program.
 
 5. [x] Add the timer functionality.
 
-6. [ ] Add the entry in registry functionality.
+6. [x] Add the entry in registry functionality.
+   HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run
+   (There is entry about the program)
 
 7. [x] Add the data.ini functionality.
 
@@ -98,10 +100,13 @@ cannot be tested, and this approach is not right. Std::cin should be moved to UI
    where the program is located.
 - [ ] There should be backdoor if user logged outside allowed hours, for example
    before the shutdown procedure there could be password dialog that would allow to bypass the shutdown.
+- [ ] Program should hard to shutdown, if user exit from main window, it should still
+   work as a background application.
 
 ## AI participation in the project
 
 1. Notifications.cpp/.h is fully AI-written.
+2. Data.cpp getFileName() is fully AI-written.
 2. Scripts.cpp/.h (scriptHandler() and addToStartup()) is written by AI and modified and understood by me.
 3. Tests are written with the help of the video https://www.youtube.com/watch?v=_MhbaVtcrR0&t=1827s
 4. Data.cpp setData() is written with the help of the video https://www.youtube.com/watch?v=QrQOrqPI6z4&t=40s

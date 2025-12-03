@@ -64,3 +64,13 @@ bool addToStartup(const std::wstring& appPath) {
     std::wcout << L"Successfully added to startup: " << std::endl;
     return true;
 }
+
+// Helper function to get the current executable path (.exe file, where is installed on the user computer).
+std::wstring getExecutablePath() {
+    wchar_t buffer[MAX_PATH];
+    // NULL retrieves the path of the executable file of the current process
+    if (GetModuleFileNameW(NULL, buffer, MAX_PATH) != 0) {
+        return std::wstring(buffer);
+    }
+    return L"";
+}

@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 4.0)
 project(cpp_parental_controller)
 
 set(CMAKE_CXX_STANDARD 20)
+# To avoid "Missing MSVCP140.dll" errors on the target machine, I should statically link the runtime libraries.
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+# Fix for MinGW: Statically link standard libraries to avoid "Entry Point Not Found" or missing DLL errors
+if(MINGW OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+endif()
 
 set(SOURCES
         main.cpp
