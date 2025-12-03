@@ -28,7 +28,7 @@ I would use the second approach, it will be slower but I would have a little fun
 
 7. [x] Add the data.ini functionality.
 
-8. [ ] Notifications.
+8. [x] Notifications.
 
 ## Approaches
 
@@ -73,16 +73,37 @@ I would use the second approach, it will be slower but I would have a little fun
    *https://learn.microsoft.com/en-us/windows/apps/develop/notifications/app-notifications/send-local-toast-cpp-uwp?tabs=builder-syntax*
 3. [x] **Using Windows API directly**
 
+### Other:
+
+1. SetData function in Data.cpp should not ask the user for the input, in that case it
+cannot be tested, and this approach is not right. Std::cin should be moved to UI or main.cpp.
+
+
 ## Structure
 
 ![Image](structure.jpg)
 
 ## TODO
 
-- [ ] Understand the Registry handler
+- [x] Understand the Registry handler
 - [ ] Understand the Notifications handler
 - [ ] Add proper Shutdown and log out functionality.
 - [x] Connect it all to the main.cpp
 - [ ] Then try to make simple GUI.
 - [ ] Password encryption handler.
-- [ ] THERE IS EXACT PROBLEM EVERYTIME I RUN ANY PASSWORD WITH 5 signs.
+- [x] THERE IS EXACT PROBLEM EVERYTIME I RUN ANY PASSWORD WITH 5 signs.
+  (There were problems with the way how the password is saved, I changed it to char array that has constant size
+   and its own constatn address in memory.)
+- [ ] Problem with the path and registry save, Fuction of saving to registry needs to know
+   where the program is located.
+- [ ] There should be backdoor if user logged outside allowed hours, for example
+   before the shutdown procedure there could be password dialog that would allow to bypass the shutdown.
+
+## AI participation in the project
+
+1. Notifications.cpp/.h is fully AI-written.
+2. Scripts.cpp/.h (scriptHandler() and addToStartup()) is written by AI and modified and understood by me.
+3. Tests are written with the help of the video https://www.youtube.com/watch?v=_MhbaVtcrR0&t=1827s
+4. Data.cpp setData() is written with the help of the video https://www.youtube.com/watch?v=QrQOrqPI6z4&t=40s
+5. Data.cpp saveData(), loadData() are written with the help of the video https://www.youtube.com/watch?v=tyXq2d5g8-0
+6. Rest if written by Byniu5™ and by using AI tools in CLion.

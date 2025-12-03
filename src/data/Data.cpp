@@ -1,6 +1,10 @@
 #include "Data.h"
+
+#include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
+#include <limits>
 #include <string>
 
 Data::Data() = default;
@@ -9,29 +13,35 @@ Data::~Data() = default;
 
 void Data::getData(DataStruct &dataStruct) {
     loadData(dataStruct, fileName);
-    // std::cout << dataStruct.start << std::endl;
-    // std::cout << dataStruct.end << std::endl;
-    // std::cout << dataStruct.password << std::endl;
+
 }
 
+// Save data to structure
 void Data::setData(DataStruct dataStruct) {
-    try {
-        // Save data to structure.
-        std::cout << "Enter start time in format HHMM (24h): ";
-        std::cin >> dataStruct.start;
-        std::cout << "Enter end time in format HHMM (24h): ";
-        std::cin >> dataStruct.end;
+
+        do {
+        // Start time
+        readTime("Enter START time in format HHMM (24h): ", dataStruct.start);
+        // End time
+        readTime("Enter END time in format HHMM (24h): ", dataStruct.end);
+        } while (dataStruct.start >= dataStruct.end);
+
+
+        // Password
         std::cout << "Enter password: ";
-        std::cin >> dataStruct.password;
+        std::cin >> std::setw(sizeof(dataStruct.password)) >> dataStruct.password;
         // Save data to the file.
         saveData(dataStruct, fileName);
-    } catch (std::exception &e) {
-        std::cerr << e.what() << '\n';
-    }
 }
 
 std::string Data::getPassword(DataStruct &dataStruct) {
     return dataStruct.password;
+}
+
+void Data::showData(DataStruct &dataStruct) {
+    std::cout << "Start: " << dataStruct.start << std::endl;
+    std::cout << "End: " << dataStruct.end << std::endl;
+    std::cout << "Password: " << dataStruct.password << std::endl;
 }
 
 /* Open the stream and save data from the structure to the file,
@@ -67,4 +77,41 @@ void Data::loadData(DataStruct &dataStruct, const std::string &fileName) {
         std::cerr << e.what() << '\n';
     }
     file.close();
+}
+
+// Check if the input contains only digits.
+auto isNumber = [](const std::string &s) {
+    return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+};
+
+// Function to validate the start and end time inputs.
+bool Data::readTime(const std::string &prompt, float& timeValue) {
+    while (true) {
+
+        std::cout << prompt;
+
+        std::string input;
+        std::cin >> input;
+
+        // Check if the input contains ONLY digits
+        if (isNumber(input)) {
+            // Input was a number, now Convert to int safely
+            int time = std::stoi(input);
+
+            // Check logical range
+            if (time >= 0 && time <= 2359) {
+
+                // Valid! SAVE value. Remove the leftover 'Enter' key. Return true.
+                timeValue = static_cast<float>(time);
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return true;
+
+            }
+        }
+        // If we get here, it was either not a number OR a number was out of range.
+        std::cout << "Invalid time format. Please enter time in HHMM format (0000-2359).\n";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 }

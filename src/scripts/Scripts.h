@@ -3,7 +3,7 @@
 
 #include <string>
 
-void script_handler(const std::wstring &command);
+void scriptHandler(const std::wstring &command);
 bool addToStartup(const std::wstring& appName, const std::wstring& appPath);
 
 #endif //CPP_PARENTAL_CONTROLLER_SHUTDOWNSCRIPT_H

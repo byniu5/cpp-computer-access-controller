@@ -10,35 +10,39 @@ int main() {
 
     std::string password = "";
 
-    struct Data::DataStruct dataStruct;
+    struct Data::DataStruct dataStruct = {};
     Data::getData(dataStruct);
     // If Windows 11/10
     //addToStartup();
 
-    if (Timer::isAllowedTime(dataStruct.start, dataStruct.end)) {
+    if (Timer::isAllowedTime(dataStruct.start, 2399)) {
         std::cout << "Access controller\nWrite password:" << std::endl;
         std::cin >> password;
 
-        while (password != dataStruct.password) {
+        while (password != Data::getPassword(dataStruct)) {
             std::cout << "Wrong password" << std::endl;
             std::cin >> password;
         }
-        if (password == dataStruct.password) {
-            std::cout << "Welcome" << std::endl;
-            std::cout << "If you want change the settings click 's'\nIf you want to disable program click 'q'" << std::endl;
+        if (password == Data::getPassword(dataStruct)) {
             std::string value;
-            std::cin >> value;
-            if (value == "s") {
-                Data::setData(dataStruct);
-            } else if (value == "q") {}
+            std::cout << "Welcome" << std::endl;
+            do {
+                std::cout << "If you want change the settings click 's'\nIf you want to disable program click 'q'" << std::endl;
+                Data::showData(dataStruct);
+                std::cin >> value;
+                if (value == "s") {
+                    Data::setData(dataStruct);
+                    Data::getData(dataStruct);
+                }
+            } while (value != "q");
             return 0;
         }
     } else {
         showToastNotificationViaPowerShell(
-        L"Log in outside of allowed hours",
-        L"Time restriction active! In 1 minute your computer will turn off."
+        L"Shutdown warning",
+        L"Log in outside of allowed hours! In 1 minute your computer will shutdown."
         );
-        //script_handler(L"shutdown /s /t 60");
+        //scriptHandler(L"shutdown /s /t 60");
     }
     return 0;
 }

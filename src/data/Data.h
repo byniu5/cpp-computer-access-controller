@@ -14,13 +14,16 @@ public:
     struct DataStruct {
         float start;
         float end;
-        std::string password;
+        char password[50];
     };
 
     static void getData(DataStruct &dataStruct);
     static void setData(DataStruct dataStruct);
 
     static std::string getPassword(DataStruct &dataStruct);
+    static void showData(DataStruct &dataStruct);
+
+    static bool readTime(const std::string &prompt, float& timeValue);
 
 private:
     static void saveData(DataStruct& dataStruct, const std::string& fileName);

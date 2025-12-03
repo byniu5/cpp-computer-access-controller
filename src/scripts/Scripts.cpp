@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-void script_handler(const std::wstring &command) {
+void scriptHandler(const std::wstring &command) {
     // Windows structures that hold information.
     STARTUPINFO si;
     PROCESS_INFORMATION pi;         //  Structure that will receive info about the created process.

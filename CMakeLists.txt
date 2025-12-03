@@ -40,6 +40,8 @@ set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
 add_executable(tests
         lib/tests/TimerTest.cpp
         src/timer/Timer.cpp
+        lib/tests/DataTest.cpp
+        src/data/Data.cpp
 )
 
 # Links GTest to test executable.
